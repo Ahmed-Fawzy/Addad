@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/usr/share/addad/addad.py
+Name=Addad
+Icon=/usr/share/addad/addad-logo.png
+Categories=GTK;GNOME;Accessories;Utility;Stopwatch;TimeCountdown;
+Comment=Simple app used as Stopwatch and Time Countdown
