@@ -3,6 +3,7 @@
 import gtk
 import gst
 import os, time
+import pynotify
 
 class Alarm(gtk.Window):
 	def __init__(self):
@@ -19,7 +20,17 @@ class Alarm(gtk.Window):
 		self.player.set_property("uri", "file://" + filepath)
 		self.player.set_state(gst.STATE_PLAYING)
 
-#--- Notificaton Dialog box ---
+# --- Notification Indicator ---
+
+		pynotify.init("Addad App")
+		n = pynotify.Notification(
+	        "Addad",
+    	    " Time CountDown is Over",
+    	    "addad-ind")
+		n.show()
+
+
+# --- Notificaton Dialog box ---
 
 		text = "Timer Countdown is over At %s" %(time.strftime(' %l:%M:%S %p '))
 		md = gtk.MessageDialog(self, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, gtk.BUTTONS_CLOSE, text)

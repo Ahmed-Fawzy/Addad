@@ -1,8 +1,8 @@
 [Desktop Entry]
-Version=1.0
+Version=2.0
 Type=Application
 Terminal=false
-Exec=/usr/share/addad/addad.py
+Exec=/usr/share/addad/addadindicator.py
 Name=Addad
 Icon=/usr/share/addad/addad-logo.png
 Categories=GTK;GNOME;Accessories;Utility;Stopwatch;TimeCountdown;

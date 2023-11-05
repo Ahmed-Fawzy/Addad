@@ -8,6 +8,7 @@
 # License: Addad program is licensed under is licensed GPL license
 # http://www.gnu.org/licenses/gpl.html
 
+#import addadindicator
 import gtk
 import gobject
 import pango
@@ -17,16 +18,22 @@ import os
 button_setting = gtk.settings_get_default()
 button_setting.set_property("gtk-button-images", True)
 
-class PyApp(gtk.Window): 
+class PyApp: 
+#(gtk.Window)
 	def __init__(self):
-		super(PyApp, self).__init__()
+		#super(PyApp, self).__init__()
 
-		self.set_size_request(430, 280)
-		self.set_position(gtk.WIN_POS_CENTER)
-		self.connect("destroy", gtk.main_quit)
-		self.set_title("عدّاد - Stop Watch & Time CountDown")
+		self.win = gtk.Window()
+
+		self.win.set_size_request(430, 280)
+		self.win.set_position(gtk.WIN_POS_CENTER)
+		self.win.connect("destroy", gtk.main_quit)
+		self.win.set_title("عدّاد - Stop Watch & Time CountDown")
 		image_dir = os.path.dirname(os.path.abspath(__file__))
-		self.set_icon_from_file(image_dir + "/addad-logo.png")
+		self.win.set_icon_from_file(image_dir + "/addad-logo.png")
+
+		self.aaaaa = "aaaaaaa"
+
 
 		global seconds, minutes, hours
 		seconds, minutes, hours = 0, 0, 0
@@ -34,7 +41,7 @@ class PyApp(gtk.Window):
 		self.st.append(False)
 
 		table = gtk.Table(1,1,gtk.FALSE)
-		self.add(table)
+		self.win.add(table)
 
 		notebook = gtk.Notebook()
 		notebook.set_tab_pos(gtk.POS_TOP)
@@ -125,6 +132,15 @@ class PyApp(gtk.Window):
 		CountDownFont = pango.FontDescription("Ubuntu italic 24")
 		self.CountDown.modify_font(CountDownFont)
 
+		timer_text = gtk.Label("Popular Timers") 
+		timer_box = gtk.combo_box_new_text()
+		timer_box.connect("changed", self.on_changed)
+
+		timer_box.append_text('10 minutes')
+		timer_box.append_text('15 minutes')
+		timer_box.append_text('30 minutes')
+		timer_box.append_text('1 hour')
+
 		hour_up_down = gtk.Label("Hours") 
 		min_up_down = gtk.Label("Mins") 
 		sec_up_down = gtk.Label("Secs") 
@@ -172,12 +188,14 @@ class PyApp(gtk.Window):
 		countdown_fix.put(btn_start_down, 270, 20)
 		countdown_fix.put(btn_pause_down, 270, 65)
 		countdown_fix.put(btn_reset_down, 270, 110)
+		countdown_fix.put(timer_text, 30, 170)
+		countdown_fix.put(timer_box, 150, 165)
 		countdown_fix.put(button_about, 315, 165)
 
 		countdown_frame.add(countdown_fix)
 
 # ------------------------
-		self.show_all()
+		self.win.show_all()
 # -------------------------
 
 # --- Stopwatch Functions ---
@@ -324,17 +342,38 @@ class PyApp(gtk.Window):
 		self.CountDown.set_text(" %02d : %02d : %02d " %(down_hour, down_min, down_sec) )
 
 
+	def on_changed(self, widget):
+		global down_sec, down_min, down_hour
+		distros = ['10 minutes','15 minutes','30 minutes','1 hour']
+
+		i =str( widget.get_active_text() )
+
+		if distros.index(i) == 0 :
+			down_sec, down_min, down_hour = 0, 10, 0
+
+		elif distros.index(i) == 1 :
+			down_sec, down_min, down_hour = 0, 15, 0
+
+		elif distros.index(i) == 2 :
+			down_sec, down_min, down_hour = 0, 30, 0
+
+		elif distros.index(i) == 3 :
+			down_sec, down_min, down_hour = 0, 0, 1
+
+		self.CountDown.set_text(" %02d : %02d : %02d " %(down_hour, down_min, down_sec) )
+
+
 # --- About function ---
 
 	def about_addad(self, widget):
 		about = gtk.AboutDialog()
 		about.set_program_name("Addad - عدّاد ")
-		about.set_version("1.0")
+		about.set_version("2.0")
 		about.set_comments("Addad is a nice app used as StopWatch and Time Countdown")
 		about.set_copyright("Developed by : Ahmed Fawzy - ahmed.linuxawy@gmail.com")
 		about.set_website("http://www.Khawarzmy.blogspot.com")
 
-		licenses = ''' Addad is licensed under GPL V3 License.
+		licenses = ''' Addad is licensed under GPL V3 License http://www.gnu.org/licenses/gpl.html
 Source of alarm sound is ' http://www.freesound.org/people/jackstrebor/sounds/34853/ ' .  '''
 		about.set_license(licenses)
 
@@ -347,5 +386,5 @@ Source of alarm sound is ' http://www.freesound.org/people/jackstrebor/sounds/34
 
 #-----------------------
 
-PyApp()
-gtk.main()
+#PyApp()
+#gtk.main()
